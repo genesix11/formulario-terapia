@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agendar Cita Inicial - Terapia Pediátrica</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; background: #f5f5f5; min-height: 100vh; padding: 20px; }
+    .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center; }
+    .header h1 { font-size: 22px; font-weight: 600; color: #2c3e50; margin-bottom: 0.25rem; }
+    .header p { font-size: 13px; color: #666; }
+    .progress { font-size: 12px; color: #999; margin-top: 0.5rem; }
+    .form-section { padding: 1.5rem; }
+    .step { display: none; }
+    .step.active { display: block; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group:last-child { margin-bottom: 0; }
+    label { display: block; font-size: 14px; font-weight: 500; color: #2c3e50; margin-bottom: 0.5rem; }
+    .required::after { content: " *"; color: #e74c3c; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select { 
+      width: 100%; padding: 0.75rem; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; 
+      font-family: inherit; color: #2c3e50; background: #fafafa; transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; background: white; }
+    textarea { resize: vertical; min-height: 100px; }
+    .radio-group { display: flex; flex-direction: column; gap: 0.75rem; }
+    .radio-item { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .radio-item input { width: auto; margin-top: 0.25rem; cursor: pointer; }
+    .radio-item label { margin-bottom: 0; font-weight: 400; cursor: pointer; }
+    .buttons { display: flex; gap: 1rem; padding: 1.5rem; border-top: 1px solid #e0e0e0; }
+    button { padding: 0.75rem 1rem; font-size: 14px; font-weight: 500; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: white; color: #2c3e50; transition: all 0.2s; }
+    button:hover { background: #f5f5f5; }
+    button.primary { background: #667eea; color: white; border-color: #667eea; }
+    button.primary:hover { background: #5568d3; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .info-box { background: #f0f4ff; border: 1px solid #d8e4ff; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; font-size: 13px; color: #333; line-height: 1.5; }
+    .error { color: #e74c3c; font-size: 13px; margin-top: 0.25rem; display: none; }
+    .success-message { background: #e8f5e9; border: 1px solid #81c784; border-radius: 6px; padding: 1.5rem; margin: 1rem; font-size: 14px; color: #2e7d32; display: none; text-align: center; }
+    .success-message h2 { font-size: 18px; margin-bottom: 0.5rem; }
+    .success-message p { margin: 0.5rem 0; font-size: 13px; }
+    .link-box { background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin: 1rem 0; word-break: break-all; font-family: 'Courier New', monospace; font-size: 12px; color: #666; }
+    .loading { display: inline-block; width: 16px; height: 16px; border: 2px solid #ddd; border-radius: 50%; border-top-color: #667eea; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .resumen-box { background: #f9f9f9; border-radius: 6px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .resumen-item { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+    .resumen-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .resumen-label { font-size: 12px; color: #999; font-weight: 500; }
+    .resumen-valor { font-size: 14px; color: #2c3e50; font-weight: 500; margin-top: 0.25rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Agendar Cita Inicial</h1>
+      <p>Cuéntanos sobre tu hijo/a</p>
+      <div class="progress"><span id="step-count">Paso 1 de 4</span></div>
+    </div>
+
+    <div class="success-message" id="success-msg">
+      <h2>✓ ¡Cita Agendada!</h2>
+      <p id="success-text"></p>
+    </div>
+
+    <!-- PASO 1: Niño -->
+    <div class="step active">
+      <div class="form-section">
+        <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Información del niño/a</h2>
+        
+        <div class="form-group">
+          <label class="required">Nombre completo</label>
+          <input type="text" id="nino_nombre" placeholder="Carlos Andrés">
+          <div class="error" id="err_nino_nombre">Requerido</div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Fecha de nacimiento</label>
+          <input type="date" id="fecha_nac">
+          <div class="error" id="err_fecha_nac">Requerido</div>
+        </div>
+
+        <div class="form-group">
+          <label style="font-weight: 400;">Género</label>
+          <div class="radio-group">
+            <div class="radio-item">
+              <input type="radio" id="genero_m" name="genero" value="Masculino" checked>
+              <label for="genero_m">Masculino</label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" id="genero_f" name="genero" value="Femenino">
+              <label for="genero_f">Femenino</label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" id="genero_otro" name="genero" value="Otro">
+              <label for="genero_otro">Otro</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label style="font-weight: 400;">Ciudad</label>
+          <input type="text" id="ciudad" placeholder="Santo Domingo">
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 2: Tutor -->
+    <div class="step">
+      <div class="form-section">
+        <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Tu información</h2>
+        
+        <div class="form-group">
+          <label class="required">Tu nombre</label>
+          <input type="text" id="tutor_nombre" placeholder="María González">
+          <div class="error" id="err_tutor_nombre">Requerido</div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Relación con el niño</label>
+          <select id="relacion">
+            <option value="">Seleccionar...</option>
+            <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Tutor">Tutor/a</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <div class="error" id="err_relacion">Requerido</div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Email</label>
+          <input type="email" id="email" placeholder="tu@correo.com">
+          <div class="error" id="err_email">Email válido requerido</div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">WhatsApp / Teléfono</label>
+          <input type="tel" id="telefono" placeholder="+1 (809) 123-4567">
+          <div class="error" id="err_telefono">Requerido</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 3: Motivo -->
+    <div class="step">
+      <div class="form-section">
+        <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Motivo de la consulta</h2>
+        
+        <div class="info-box">
+          En la primera cita exploraremos todo en detalle. Cuéntanos lo principal ahora.
+        </div>
+
+        <div class="form-group">
+          <label class="required">¿Cuál es tu principal preocupación?</label>
+          <textarea id="motivo_consulta" placeholder="Ej: Tiene dificultad para manejar emociones, grita mucho..."></textarea>
+          <div class="error" id="err_motivo_consulta">Requerido</div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">¿Desde hace cuánto tiempo?</label>
+          <select id="tiempo_conducta">
+            <option value="">Seleccionar...</option>
+            <option value="Menos de 1 mes">Menos de 1 mes</option>
+            <option value="1-3 meses">1 a 3 meses</option>
+            <option value="3-6 meses">3 a 6 meses</option>
+            <option value="6-12 meses">6 a 12 meses</option>
+            <option value="Más de 1 año">Más de 1 año</option>
+          </select>
+          <div class="error" id="err_tiempo_conducta">Requerido</div>
+        </div>
+
+        <div style="border-top: 1px solid #e0e0e0; margin: 1.5rem 0;"></div>
+
+        <div class="form-group">
+          <label class="required">¿Cuándo te gustaría venir?</label>
+          <textarea id="disponibilidad" placeholder="Ej: Lunes o miércoles después de las 4pm..."></textarea>
+          <div class="error" id="err_disponibilidad">Requerido</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 4: Referencia + Resumen -->
+    <div class="step">
+      <div class="form-section">
+        <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Referencia</h2>
+        
+        <div class="form-group">
+          <label class="required">¿Cómo nos encontraste? ¿De quién fuiste referido/a?</label>
+          <textarea id="referencia" placeholder="Ej: Mi pediatra me recomendó, amiga que fue paciente, escuela del niño, redes sociales..."></textarea>
+          <div class="error" id="err_referencia">Requerido</div>
+        </div>
+
+        <div style="border-top: 1px solid #e0e0e0; margin: 1.5rem 0; padding-top: 1.5rem;">
+          <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Resumen</h2>
+          <div class="resumen-box">
+            <div class="resumen-item">
+              <div class="resumen-label">Niño/a</div>
+              <div class="resumen-valor" id="r_nino">-</div>
+            </div>
+            <div class="resumen-item">
+              <div class="resumen-label">Edad</div>
+              <div class="resumen-valor" id="r_edad">-</div>
+            </div>
+            <div class="resumen-item">
+              <div class="resumen-label">Tutor</div>
+              <div class="resumen-valor" id="r_tutor">-</div>
+            </div>
+            <div class="resumen-item">
+              <div class="resumen-label">Email</div>
+              <div class="resumen-valor" id="r_email">-</div>
+            </div>
+            <div class="resumen-item">
+              <div class="resumen-label">Teléfono</div>
+              <div class="resumen-valor" id="r_telefono">-</div>
+            </div>
+            <div class="resumen-item">
+              <div class="resumen-label">Motivo principal</div>
+              <div class="resumen-valor" id="r_motivo">-</div>
+            </div>
+            <div class="resumen-item">
+              <div class="resumen-label">Disponibilidad</div>
+              <div class="resumen-valor" id="r_disponibilidad">-</div>
+            </div>
+            <div class="resumen-item">
+              <div class="resumen-label">Referencia</div>
+              <div class="resumen-valor" id="r_referencia">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box" style="background: #f0f4ff; border-color: #d8e4ff;">
+          Al agendar, se generará un link de confirmación que podrás compartir por WhatsApp.
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="btn-prev" onclick="prevStep()" style="flex: 0 1 auto;">← Atrás</button>
+      <button id="btn-next" class="primary" onclick="nextStep()" style="flex: 1;">Siguiente</button>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUMzAK0NC7G77OMrCS09MZsAcd41tViL8ivokUgRbnHeF9EQgfZSiyz7YAOJyXGnCs/exec";
+
+    function updateUI() {
+      document.querySelectorAll('.step').forEach((el, i) => {
+        el.classList.toggle('active', i + 1 === currentStep);
+      });
+      document.getElementById('step-count').textContent = `Paso ${currentStep} de ${totalSteps}`;
+      document.getElementById('btn-prev').style.display = currentStep === 1 ? 'none' : 'block';
+      document.getElementById('btn-next').textContent = currentStep === totalSteps ? 'Agendar' : 'Siguiente';
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+    }
+
+    function calcularEdad(fecha) {
+      const hoy = new Date();
+      const nacimiento = new Date(fecha);
+      let edad = hoy.getFullYear() - nacimiento.getFullYear();
+      const mes = hoy.getMonth() - nacimiento.getMonth();
+      if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
+      return edad;
+    }
+
+    function validateStep(step) {
+      clearErrors();
+      let valid = true;
+
+      if (step === 1) {
+        if (!document.getElementById('nino_nombre').value) { document.getElementById('err_nino_nombre').style.display = 'block'; valid = false; }
+        if (!document.getElementById('fecha_nac').value) { document.getElementById('err_fecha_nac').style.display = 'block'; valid = false; }
+      } else if (step === 2) {
+        if (!document.getElementById('tutor_nombre').value) { document.getElementById('err_tutor_nombre').style.display = 'block'; valid = false; }
+        if (!document.getElementById('relacion').value) { document.getElementById('err_relacion').style.display = 'block'; valid = false; }
+        if (!document.getElementById('email').value || !document.getElementById('email').value.includes('@')) { document.getElementById('err_email').style.display = 'block'; valid = false; }
+        if (!document.getElementById('telefono').value) { document.getElementById('err_telefono').style.display = 'block'; valid = false; }
+      } else if (step === 3) {
+        if (!document.getElementById('motivo_consulta').value) { document.getElementById('err_motivo_consulta').style.display = 'block'; valid = false; }
+        if (!document.getElementById('tiempo_conducta').value) { document.getElementById('err_tiempo_conducta').style.display = 'block'; valid = false; }
+        if (!document.getElementById('disponibilidad').value) { document.getElementById('err_disponibilidad').style.display = 'block'; valid = false; }
+      } else if (step === 4) {
+        if (!document.getElementById('referencia').value) { document.getElementById('err_referencia').style.display = 'block'; valid = false; }
+      }
+
+      return valid;
+    }
+
+    function updateResumen() {
+      const edad = calcularEdad(document.getElementById('fecha_nac').value);
+      document.getElementById('r_nino').textContent = document.getElementById('nino_nombre').value;
+      document.getElementById('r_edad').textContent = edad + ' años';
+      document.getElementById('r_tutor').textContent = document.getElementById('tutor_nombre').value;
+      document.getElementById('r_email').textContent = document.getElementById('email').value;
+      document.getElementById('r_telefono').textContent = document.getElementById('telefono').value;
+      document.getElementById('r_motivo').textContent = document.getElementById('motivo_consulta').value;
+      document.getElementById('r_disponibilidad').textContent = document.getElementById('disponibilidad').value;
+      document.getElementById('r_referencia').textContent = document.getElementById('referencia').value || '-';
+    }
+
+    function nextStep() {
+      if (!validateStep(currentStep)) return;
+      
+      if (currentStep === totalSteps) {
+        agendar();
+      } else {
+        if (currentStep === 3) {
+          updateResumen();
+        }
+        currentStep++;
+        updateUI();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateUI();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function agendar() {
+      const btn = document.getElementById('btn-next');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span> Agendando...';
+
+      const data = {
+        action: 'crearCita',
+        nombreCliente: document.getElementById('tutor_nombre').value,
+        emailCliente: document.getElementById('email').value,
+        telefonoCliente: document.getElementById('telefono').value,
+        nombreNino: document.getElementById('nino_nombre').value,
+        motivoConsulta: document.getElementById('motivo_consulta').value,
+        disponibilidad: document.getElementById('disponibilidad').value,
+        referencia: document.getElementById('referencia').value,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      })
+      .then(r => r.json())
+      .then(result => {
+        btn.disabled = false;
+        btn.innerHTML = 'Siguiente';
+        
+        if (result.success) {
+          document.getElementById('success-msg').style.display = 'block';
+          document.getElementById('success-text').innerHTML = `
+            <p style="margin-bottom: 1rem;">¡Cita agendada exitosamente!</p>
+            <p style="font-size: 12px; color: #666; margin-bottom: 1rem;">Entrevista inicial: <strong>${data.nombreNino}</strong></p>
+            <p style="font-size: 12px; color: #666; margin-bottom: 1rem;">Link de confirmación:</p>
+            <div class="link-box">${result.link}</div>
+            <p style="font-size: 12px; margin-top: 1rem; color: #666;">Comparte por WhatsApp para que confirme la cita.</p>
+          `;
+          document.querySelector('.container').style.display = 'none';
+          document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          alert('Error: ' + result.error);
+        }
+      })
+      .catch(err => {
+        btn.disabled = false;
+        btn.innerHTML = 'Siguiente';
+        alert('Error: ' + err);
+      });
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>
