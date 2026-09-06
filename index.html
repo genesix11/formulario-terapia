@@ -19,10 +19,7 @@
     .form-group:last-child { margin-bottom: 0; }
     label { display: block; font-size: 14px; font-weight: 500; color: #2c3e50; margin-bottom: 0.5rem; }
     .required::after { content: " *"; color: #e74c3c; }
-    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select { 
-      width: 100%; padding: 0.75rem; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; 
-      font-family: inherit; color: #2c3e50; background: #fafafa; transition: border-color 0.2s;
-    }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select { width: 100%; padding: 0.75rem; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; color: #2c3e50; background: #fafafa; transition: border-color 0.2s; }
     input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; background: white; }
     textarea { resize: vertical; min-height: 100px; }
     .radio-group { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -63,41 +60,27 @@
       <p id="success-text"></p>
     </div>
 
-    <!-- PASO 1: Niño -->
     <div class="step active">
       <div class="form-section">
         <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Información del niño/a</h2>
-        
         <div class="form-group">
           <label class="required">Nombre completo</label>
           <input type="text" id="nino_nombre" placeholder="Carlos Andrés">
           <div class="error" id="err_nino_nombre">Requerido</div>
         </div>
-
         <div class="form-group">
           <label class="required">Fecha de nacimiento</label>
           <input type="date" id="fecha_nac">
           <div class="error" id="err_fecha_nac">Requerido</div>
         </div>
-
         <div class="form-group">
           <label style="font-weight: 400;">Género</label>
           <div class="radio-group">
-            <div class="radio-item">
-              <input type="radio" id="genero_m" name="genero" value="Masculino" checked>
-              <label for="genero_m">Masculino</label>
-            </div>
-            <div class="radio-item">
-              <input type="radio" id="genero_f" name="genero" value="Femenino">
-              <label for="genero_f">Femenino</label>
-            </div>
-            <div class="radio-item">
-              <input type="radio" id="genero_otro" name="genero" value="Otro">
-              <label for="genero_otro">Otro</label>
-            </div>
+            <div class="radio-item"><input type="radio" id="genero_m" name="genero" value="Masculino" checked><label for="genero_m">Masculino</label></div>
+            <div class="radio-item"><input type="radio" id="genero_f" name="genero" value="Femenino"><label for="genero_f">Femenino</label></div>
+            <div class="radio-item"><input type="radio" id="genero_otro" name="genero" value="Otro"><label for="genero_otro">Otro</label></div>
           </div>
         </div>
-
         <div class="form-group">
           <label style="font-weight: 400;">Ciudad</label>
           <input type="text" id="ciudad" placeholder="Santo Domingo">
@@ -105,35 +88,24 @@
       </div>
     </div>
 
-    <!-- PASO 2: Tutor -->
     <div class="step">
       <div class="form-section">
         <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Tu información</h2>
-        
         <div class="form-group">
           <label class="required">Tu nombre</label>
           <input type="text" id="tutor_nombre" placeholder="María González">
           <div class="error" id="err_tutor_nombre">Requerido</div>
         </div>
-
         <div class="form-group">
           <label class="required">Relación con el niño</label>
-          <select id="relacion">
-            <option value="">Seleccionar...</option>
-            <option value="Madre">Madre</option>
-            <option value="Padre">Padre</option>
-            <option value="Tutor">Tutor/a</option>
-            <option value="Otro">Otro</option>
-          </select>
+          <select id="relacion"><option value="">Seleccionar...</option><option value="Madre">Madre</option><option value="Padre">Padre</option><option value="Tutor">Tutor/a</option><option value="Otro">Otro</option></select>
           <div class="error" id="err_relacion">Requerido</div>
         </div>
-
         <div class="form-group">
           <label class="required">Email</label>
           <input type="email" id="email" placeholder="tu@correo.com">
           <div class="error" id="err_email">Email válido requerido</div>
         </div>
-
         <div class="form-group">
           <label class="required">WhatsApp / Teléfono</label>
           <input type="tel" id="telefono" placeholder="+1 (809) 123-4567">
@@ -142,36 +114,21 @@
       </div>
     </div>
 
-    <!-- PASO 3: Motivo -->
     <div class="step">
       <div class="form-section">
         <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Motivo de la consulta</h2>
-        
-        <div class="info-box">
-          En la primera cita exploraremos todo en detalle. Cuéntanos lo principal ahora.
-        </div>
-
+        <div class="info-box">En la primera cita exploraremos todo en detalle. Cuéntanos lo principal ahora.</div>
         <div class="form-group">
           <label class="required">¿Cuál es tu principal preocupación?</label>
           <textarea id="motivo_consulta" placeholder="Ej: Tiene dificultad para manejar emociones, grita mucho..."></textarea>
           <div class="error" id="err_motivo_consulta">Requerido</div>
         </div>
-
         <div class="form-group">
           <label class="required">¿Desde hace cuánto tiempo?</label>
-          <select id="tiempo_conducta">
-            <option value="">Seleccionar...</option>
-            <option value="Menos de 1 mes">Menos de 1 mes</option>
-            <option value="1-3 meses">1 a 3 meses</option>
-            <option value="3-6 meses">3 a 6 meses</option>
-            <option value="6-12 meses">6 a 12 meses</option>
-            <option value="Más de 1 año">Más de 1 año</option>
-          </select>
+          <select id="tiempo_conducta"><option value="">Seleccionar...</option><option value="Menos de 1 mes">Menos de 1 mes</option><option value="1-3 meses">1 a 3 meses</option><option value="3-6 meses">3 a 6 meses</option><option value="6-12 meses">6 a 12 meses</option><option value="Más de 1 año">Más de 1 año</option></select>
           <div class="error" id="err_tiempo_conducta">Requerido</div>
         </div>
-
         <div style="border-top: 1px solid #e0e0e0; margin: 1.5rem 0;"></div>
-
         <div class="form-group">
           <label class="required">¿Cuándo te gustaría venir?</label>
           <textarea id="disponibilidad" placeholder="Ej: Lunes o miércoles después de las 4pm..."></textarea>
@@ -180,58 +137,28 @@
       </div>
     </div>
 
-    <!-- PASO 4: Referencia + Resumen -->
     <div class="step">
       <div class="form-section">
         <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Referencia</h2>
-        
         <div class="form-group">
           <label class="required">¿Cómo nos encontraste? ¿De quién fuiste referido/a?</label>
           <textarea id="referencia" placeholder="Ej: Mi pediatra me recomendó, amiga que fue paciente, escuela del niño, redes sociales..."></textarea>
           <div class="error" id="err_referencia">Requerido</div>
         </div>
-
         <div style="border-top: 1px solid #e0e0e0; margin: 1.5rem 0; padding-top: 1.5rem;">
           <h2 style="font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: #2c3e50;">Resumen</h2>
           <div class="resumen-box">
-            <div class="resumen-item">
-              <div class="resumen-label">Niño/a</div>
-              <div class="resumen-valor" id="r_nino">-</div>
-            </div>
-            <div class="resumen-item">
-              <div class="resumen-label">Edad</div>
-              <div class="resumen-valor" id="r_edad">-</div>
-            </div>
-            <div class="resumen-item">
-              <div class="resumen-label">Tutor</div>
-              <div class="resumen-valor" id="r_tutor">-</div>
-            </div>
-            <div class="resumen-item">
-              <div class="resumen-label">Email</div>
-              <div class="resumen-valor" id="r_email">-</div>
-            </div>
-            <div class="resumen-item">
-              <div class="resumen-label">Teléfono</div>
-              <div class="resumen-valor" id="r_telefono">-</div>
-            </div>
-            <div class="resumen-item">
-              <div class="resumen-label">Motivo principal</div>
-              <div class="resumen-valor" id="r_motivo">-</div>
-            </div>
-            <div class="resumen-item">
-              <div class="resumen-label">Disponibilidad</div>
-              <div class="resumen-valor" id="r_disponibilidad">-</div>
-            </div>
-            <div class="resumen-item">
-              <div class="resumen-label">Referencia</div>
-              <div class="resumen-valor" id="r_referencia">-</div>
-            </div>
+            <div class="resumen-item"><div class="resumen-label">Niño/a</div><div class="resumen-valor" id="r_nino">-</div></div>
+            <div class="resumen-item"><div class="resumen-label">Edad</div><div class="resumen-valor" id="r_edad">-</div></div>
+            <div class="resumen-item"><div class="resumen-label">Tutor</div><div class="resumen-valor" id="r_tutor">-</div></div>
+            <div class="resumen-item"><div class="resumen-label">Email</div><div class="resumen-valor" id="r_email">-</div></div>
+            <div class="resumen-item"><div class="resumen-label">Teléfono</div><div class="resumen-valor" id="r_telefono">-</div></div>
+            <div class="resumen-item"><div class="resumen-label">Motivo principal</div><div class="resumen-valor" id="r_motivo">-</div></div>
+            <div class="resumen-item"><div class="resumen-label">Disponibilidad</div><div class="resumen-valor" id="r_disponibilidad">-</div></div>
+            <div class="resumen-item"><div class="resumen-label">Referencia</div><div class="resumen-valor" id="r_referencia">-</div></div>
           </div>
         </div>
-
-        <div class="info-box" style="background: #f0f4ff; border-color: #d8e4ff;">
-          Al agendar, se generará un link de confirmación que podrás compartir por WhatsApp.
-        </div>
+        <div class="info-box" style="background: #f0f4ff; border-color: #d8e4ff;">Al agendar, se generará un link de confirmación que podrás compartir por WhatsApp.</div>
       </div>
     </div>
 
@@ -244,7 +171,7 @@
   <script>
     let currentStep = 1;
     const totalSteps = 4;
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUMzAK0NC7G77OMrCS09MZsAcd41tViL8ivokUgRbnHeF9EQgfZSiyz7YAOJyXGnCs/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzf2PVqHw3pU3vcRXoEj9-9mCP5hl-HUz6dzJye9VwsUiT5DnWMHWB606VhbjpfsdW1/exec";
 
     function updateUI() {
       document.querySelectorAll('.step').forEach((el, i) => {
@@ -271,7 +198,6 @@
     function validateStep(step) {
       clearErrors();
       let valid = true;
-
       if (step === 1) {
         if (!document.getElementById('nino_nombre').value) { document.getElementById('err_nino_nombre').style.display = 'block'; valid = false; }
         if (!document.getElementById('fecha_nac').value) { document.getElementById('err_fecha_nac').style.display = 'block'; valid = false; }
@@ -287,7 +213,6 @@
       } else if (step === 4) {
         if (!document.getElementById('referencia').value) { document.getElementById('err_referencia').style.display = 'block'; valid = false; }
       }
-
       return valid;
     }
 
@@ -305,13 +230,10 @@
 
     function nextStep() {
       if (!validateStep(currentStep)) return;
-      
       if (currentStep === totalSteps) {
         agendar();
       } else {
-        if (currentStep === 3) {
-          updateResumen();
-        }
+        if (currentStep === 3) updateResumen();
         currentStep++;
         updateUI();
         window.scrollTo(0, 0);
@@ -351,16 +273,9 @@
       .then(result => {
         btn.disabled = false;
         btn.innerHTML = 'Siguiente';
-        
         if (result.success) {
           document.getElementById('success-msg').style.display = 'block';
-          document.getElementById('success-text').innerHTML = `
-            <p style="margin-bottom: 1rem;">¡Cita agendada exitosamente!</p>
-            <p style="font-size: 12px; color: #666; margin-bottom: 1rem;">Entrevista inicial: <strong>${data.nombreNino}</strong></p>
-            <p style="font-size: 12px; color: #666; margin-bottom: 1rem;">Link de confirmación:</p>
-            <div class="link-box">${result.link}</div>
-            <p style="font-size: 12px; margin-top: 1rem; color: #666;">Comparte por WhatsApp para que confirme la cita.</p>
-          `;
+          document.getElementById('success-text').innerHTML = `<p style="margin-bottom: 1rem;">¡Cita agendada exitosamente!</p><p style="font-size: 12px; color: #666; margin-bottom: 1rem;">Entrevista inicial: <strong>${data.nombreNino}</strong></p><p style="font-size: 12px; color: #666; margin-bottom: 1rem;">Link de confirmación:</p><div class="link-box">${result.link}</div><p style="font-size: 12px; margin-top: 1rem; color: #666;">Comparte por WhatsApp para que confirme la cita.</p>`;
           document.querySelector('.container').style.display = 'none';
           document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth' });
         } else {
