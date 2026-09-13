@@ -171,11 +171,7 @@
   <script>
     let currentStep = 1;
     const totalSteps = 4;
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyasBwqtPJDcwH_PTRpP2zgoKZWe54zpbzubRpamQSVT2eeyOeQ_XUucXK86NZSaOGL/exec";
-
-    function updateUI() {
-      document.querySelectorAll('.step').forEach((el, i) => {
-        el.classList.toggle('active', i + 1 === currentStep);
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyasBwqtPJDcwH_PTRpP2zgoKZWe54zpbzubRpamQSVT2eeyOeQ_XUucXK86NZSaOGL/usercopy";
       });
       document.getElementById('step-count').textContent = `Paso ${currentStep} de ${totalSteps}`;
       document.getElementById('btn-prev').style.display = currentStep === 1 ? 'none' : 'block';
